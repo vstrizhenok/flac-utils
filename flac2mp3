@@ -6,7 +6,8 @@ else
 shellDir="${1}"
 fi
 
-prefix="/home/vstrizhenok/Music/_mp3_converted"
+USER_HOME=$(getent passwd `whoami` | cut -d: -f6)
+prefix="${USER_HOME}/Music/_mp3_converted"
 find "${shellDir}" -name '*.flac' -print | while read fn;
 do
   ARTIST=`metaflac "$fn" --show-tag=ARTIST | sed s/.*=//g`
