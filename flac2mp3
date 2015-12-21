@@ -6,9 +6,15 @@ else
 shellDir="${1}"
 fi
 
+FILE_EXT="${2}"
+if [ -z ${FILE_EXT} ]; then
+	FILE_EXT='flac'
+fi
+FILE_EXT="*.${FILE_EXT}"
+
 USER_HOME=$(getent passwd `whoami` | cut -d: -f6)
 prefix="${USER_HOME}/Music/_mp3_converted"
-find "${shellDir}" -name '*.flac' -print | while read fn;
+find "${shellDir}" -name "${FILE_EXT}" -print | while read fn;
 do
   ARTIST=`metaflac "$fn" --show-tag=ARTIST | sed s/.*=//g`
   TITLE=`metaflac "$fn" --show-tag=TITLE | sed s/.*=//g`
@@ -18,7 +24,7 @@ do
   DATE=`metaflac "$fn" --show-tag=DATE | sed s/.*=//g`
 
 newpath="${prefix}/$ARTIST/$ALBUM"
-if [ -z $TITLE ]; then 
+if [ -z "${TITLE}" ]; then 
   TITLE=$fn
 fi
 newfile=${TITLE}.mp3

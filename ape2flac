@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ "${1}" == '' ]; then
+	shellDir="$PWD"
+else
+	shellDir="${1}"
+fi
+
+convPath=`whereis avconv | cut -d':' -f2,100 | cut -d' ' -f2`
+if [ ! -f "$convPath" ]; then
+	echo "avconv is not found. Please install avconv"
+	exit 1
+fi
+
+find "${shellDir}" -type f -name "*.ape"  -exec avconv -i '{}' '{}.flac' \;
+find "${shellDir}" -type f -name "*.ape.flac" -exec rename 's/\.ape\.flac$/\.flac/' {} \;
+
+#find "${shellDir}" -name '*.ape' -print | while read file_ape; do
+#    file_cue=$(basename "${file_ape}" | sed "s/.ape/.cue/g")
+#    file_cue=$(dirname "${file_ape}")"/${file_cue}"
+#    if [ ! -f "$file_ape" ]; then
+#        echo "file ${file_ape} does not exists"
+#        continue
+#    fi
+#    echo "Processing file $file_ape"
+#    file_ape=$(printf '%q' "$file_ape")
+#    file_cue=$(printf '%q' "$file_cue")
+#    avconv -i "$file_ape" "$file_cue"
+#done

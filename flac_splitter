@@ -32,7 +32,7 @@ rename_files() {
           cueprint -n $i -t \
           'ARRANGER=%A\nCOMPOSER=%C\nGENRE=%G\nMESSAGE=%M\nTRACKNUMBER=%n\nARTIST=%p\nTITLE=%t\nALBUM=%T\n' \
           "${file_cue}" | egrep -v '=$' | iconv -f "${sourceEncoding}" -t utf-8 | metaflac --import-tags-from=- $NN.flac
-          out_name=$(cueprint -n $i -t "%p - %t" "${file_cue}" | iconv -f "${sourceEncoding}" -t utf-8 |  sed -e "s,/,,g")
+          out_name=$(cueprint -n $i -t "%P - %t" "${file_cue}" | iconv -f "${sourceEncoding}" -t utf-8 |  sed -e "s,/,,g")
           if [ -f "${out_name}.flac" ]; then
             out_name=$NN
           fi
